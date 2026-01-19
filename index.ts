@@ -1,6 +1,9 @@
 import { Core } from "./core/core.ts";
+import { logger } from "./core/middlewares/logger.ts";
 
 const core = new Core();
+
+core.router.use([logger]);
 
 core.router.get("/", (req, res) => {
   res.status(200).end("Hello World");
