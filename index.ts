@@ -1,5 +1,6 @@
 import { Core } from "./core/core.ts";
 import { logger } from "./core/middlewares/logger.ts";
+import { RouteError } from "./core/utils/route-error.ts";
 
 const core = new Core();
 
@@ -11,11 +12,13 @@ core.router.get("/", (req, res) => {
 
 core.router.get("/curso/:slug", (req, res) => {
   const { slug } = req.params;
-  if(slug) {
-    res.status(200).json(slug);
-  } else {
-    res.status(404).json("curso não encontrado")
+  const courses = ["javascript", "php", "python"];
+  const course = courses.includes(slug);
+  if(!course) {
+    throw new RouteError(404, "Curso não encontrado!");
   }
+
+  res.status(200).json(slug);
 });
 
 core.init();
